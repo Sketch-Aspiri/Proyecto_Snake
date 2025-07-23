@@ -15,7 +15,6 @@ CELL_SIZE = 20
 ROWS = HEIGHT // CELL_SIZE
 COLS = WIDTH // CELL_SIZE
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Carlitos la serpiente")
 
 # Colores
 WHITE = (255, 255, 255)
@@ -134,7 +133,7 @@ def main(level_data):
 
 
 if __name__ == "__main__":
-    from clases.leves import levels
+    from clases.levels import levels
 
     while True:
         show_start_screen(screen, WIDTH, HEIGHT)
@@ -147,7 +146,7 @@ if __name__ == "__main__":
                 sys.exit()
 
 if __name__ == "__main__":
-    from clases.leves import levels
+    from clases.levels import levels
 
     while True:
         show_start_screen(screen, WIDTH, HEIGHT)
