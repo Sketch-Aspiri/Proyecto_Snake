@@ -24,7 +24,7 @@ BLACK = (0, 0, 0)
 clock = pygame.time.Clock()
 
 def main():
-    snake = Snake()
+    snake = Snake(COLS, ROWS)
     food = Food(COLS, ROWS)
     running = True
     foods_eaten = 0

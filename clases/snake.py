@@ -4,7 +4,9 @@ CELL_SIZE = 20
 GREEN = (0, 200, 0)
 
 class Snake:
-    def __init__(self):
+    def __init__(self, cols, rows):
+        self.cols=cols
+        self.rows=rows
         self.body = [[5, 5]]
         self.direction = [1, 0]
 
@@ -26,8 +28,8 @@ class Snake:
         head = self.body[-1]
         return (
             head in self.body[:-1] or
-            head[0] < 0 or head[0] >= COLS or
-            head[1] < 0 or head[1] >= ROWS
+            head[0] < 0 or head[0] >= self.cols or
+            head[1] < 0 or head[1] >= self.rows
         )
 
     def draw(self, screen):
