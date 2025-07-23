@@ -20,3 +20,35 @@ def wait_for_next_level(screen, width, height):
 
         draw_text(screen, "Presiona ESPACIO para continuar", (180, 180, 180), width, height, y_offset=40, size=24)
         pygame.display.update()
+        
+def draw_score(screen, text, color, x, y, size=24):
+    font = pygame.font.SysFont(None, size)
+    message = font.render(text, True, color)
+    screen.blit(message, (x, y))
+    
+def pause_game(screen, width, height):
+    paused = True
+
+    # Dibujar pantalla de pausa
+    screen.fill((0, 0, 0))
+    font = pygame.font.SysFont(None, 48)
+    message1 = font.render("Juego en pausa", True, (255, 255, 0))
+    rect1 = message1.get_rect(center=(width // 2, height // 2 - 20))
+    screen.blit(message1, rect1)
+
+    message2 = font.render("Presiona ESPACIO para continuar", True, (255, 255, 0))
+    rect2 = message2.get_rect(center=(width // 2, height // 2 + 20))
+    screen.blit(message2, rect2)
+
+    pygame.display.update()
+
+    while paused:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    paused = False
+

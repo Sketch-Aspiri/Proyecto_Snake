@@ -2,8 +2,9 @@ import pygame
 import sys
 from clases.snake import Snake
 from clases.food import Food
-from clases.utils import draw_text
 from clases.startScreen import show_start_screen
+from clases.utils import draw_text, draw_score, pause_game
+
 
 # Inicializar pygame
 pygame.init()
@@ -36,13 +37,21 @@ def main(level_data):
     game_over = False
     level_complete = False
 
+    paused = False
     while running:
         clock.tick(speed)  
         screen.fill(BLACK)
+        draw_score(screen, f"🍎 {foods_eaten}/{total_food}", WHITE, 10, 10)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    if not paused:
+                        paused = True
+                        pause_game(screen, WIDTH, HEIGHT)
+                        paused = False
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
