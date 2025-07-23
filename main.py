@@ -14,7 +14,7 @@ CELL_SIZE = 20
 ROWS = HEIGHT // CELL_SIZE
 COLS = WIDTH // CELL_SIZE
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Carlitos la serpiente - Nivel 1")
+pygame.display.set_caption("Carlitos la serpiente")
 
 # Colores
 WHITE = (255, 255, 255)
@@ -24,17 +24,20 @@ BLACK = (0, 0, 0)
 
 clock = pygame.time.Clock()
 
-def main():
+def main(level_data):
+    pygame.display.set_caption(f"Carlitos la serpiente - {level_data['nombre']}")
     snake = Snake(COLS, ROWS)
     food = Food(COLS, ROWS)
     running = True
     foods_eaten = 0
-    total_food = 10
+    total_food = level_data["total_food"]
+    speed = level_data["speed"]
+    message = level_data["mensaje"]
     game_over = False
     level_complete = False
 
     while running:
-        clock.tick(10)  
+        clock.tick(speed)  
         screen.fill(BLACK)
 
         for event in pygame.event.get():
@@ -86,18 +89,28 @@ def main():
         if game_over:
             draw_text(screen, "Game Over", RED, WIDTH, HEIGHT)
         elif level_complete:
-            draw_text(screen, "¡Felicidades!", WHITE, WIDTH, HEIGHT, -20)
-            draw_text(screen, "Pasaste el Nivel 1", WHITE, WIDTH, HEIGHT, 20)
+            draw_text(screen, message, WHITE, WIDTH, HEIGHT, y_offset=-20)
+            pygame.display.update()
+            from clases.utils import wait_for_next_level
+            wait_for_next_level(screen, WIDTH, HEIGHT)
 
         pygame.display.update()
 
-        if game_over or level_complete:
+        if game_over:
             pygame.time.delay(3000)
             running = False
+        elif level_complete:
+            pygame.time.delay(1000)
+            wait_for_next_level(screen, WIDTH, HEIGHT)
+            running = False
 
-    pygame.quit()
-    sys.exit()
+    return "next" if level_complete else "game_over"
 
 if __name__ == "__main__":
     show_start_screen(screen, WIDTH, HEIGHT)
-    main()
+    from clases.leves import levels
+    
+    for nivel in levels:
+        resultado = main(nivel)
+        if resultado != "next":
+            break
