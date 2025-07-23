@@ -3,6 +3,7 @@ import sys
 from clases.snake import Snake
 from clases.food import Food
 from clases.utils import draw_text
+from clases.startScreen import show_start_screen
 
 # Inicializar pygame
 pygame.init()
@@ -33,7 +34,7 @@ def main():
     level_complete = False
 
     while running:
-        clock.tick(10)
+        clock.tick(10)  
         screen.fill(BLACK)
 
         for event in pygame.event.get():
@@ -98,4 +99,5 @@ def main():
     sys.exit()
 
 if __name__ == "__main__":
+    show_start_screen(screen, WIDTH, HEIGHT)
     main()
