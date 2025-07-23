@@ -51,4 +51,24 @@ def pause_game(screen, width, height):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     paused = False
+                    
+def show_game_over_screen(screen, width, height):
+    import pygame
+    from clases.utils import draw_text
+
+    waiting = True
+    while waiting:
+        screen.fill((0, 0, 0))
+        draw_text(screen, "Game Over", (255, 0, 0), width, height, -40, size=50)
+        draw_text(screen, "Presiona ESPACIO para volver al menú", (255, 255, 0), width, height, 20, size=30)
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    waiting = False
+
 

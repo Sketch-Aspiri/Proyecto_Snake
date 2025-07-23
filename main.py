@@ -3,7 +3,7 @@ import sys
 from clases.snake import Snake
 from clases.food import Food
 from clases.startScreen import show_start_screen
-from clases.utils import draw_text, draw_score, pause_game
+from clases.utils import draw_text, draw_score, pause_game, wait_for_next_level, show_game_over_screen
 
 
 # Inicializar pygame
@@ -95,19 +95,14 @@ def main(level_data):
         snake.draw(screen)
         food.draw(screen)
 
-        if game_over:
-            draw_text(screen, "Game Over", RED, WIDTH, HEIGHT)
-        elif level_complete:
+        if level_complete:
             draw_text(screen, message, WHITE, WIDTH, HEIGHT, y_offset=-20)
-            pygame.display.update()
-            from clases.utils import wait_for_next_level
-            wait_for_next_level(screen, WIDTH, HEIGHT)
 
         pygame.display.update()
 
         if game_over:
-            pygame.time.delay(3000)
-            running = False
+            show_game_over_screen(screen, WIDTH, HEIGHT)
+            return "menu"
         elif level_complete:
             pygame.time.delay(1000)
             wait_for_next_level(screen, WIDTH, HEIGHT)
@@ -116,10 +111,14 @@ def main(level_data):
     return "next" if level_complete else "game_over"
 
 if __name__ == "__main__":
-    show_start_screen(screen, WIDTH, HEIGHT)
     from clases.leves import levels
-    
-    for nivel in levels:
-        resultado = main(nivel)
-        if resultado != "next":
-            break
+
+    while True:
+        show_start_screen(screen, WIDTH, HEIGHT)
+        for nivel in levels:
+            resultado = main(nivel)
+            if resultado == "menu":
+                break 
+            elif resultado != "next":
+                pygame.quit()
+                sys.exit()
