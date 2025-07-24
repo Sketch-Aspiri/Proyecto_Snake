@@ -20,5 +20,13 @@ levels = [
             "appear_at": 5,
             "speed_delay": 3
         }
+    },
+    {
+    "nombre": "Nivel 3",
+    "total_food": 10,
+    "speed": 12,
+    "mensaje": "¡Nivel 3 completado!",
+    "enemy_type": "turret",
+    "obstacles": "x_shape"
     }
 ]

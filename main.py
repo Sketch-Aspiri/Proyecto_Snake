@@ -5,6 +5,9 @@ from clases.food import Food
 from clases.startScreen import show_start_screen
 from clases.utils import draw_text, draw_score, pause_game, wait_for_next_level, show_game_over_screen
 from clases.enemy import Enemy
+from clases.turret import Turret
+from clases.projectile import Projectile
+
 
 # Inicializar pygame
 pygame.init()
@@ -54,7 +57,7 @@ def update_snake(snake, food, foods_eaten, cols, rows):
 def handle_enemy(enemy, snake, active, enemy_data, foods_eaten):
     if enemy_data.get("active") and not active and foods_eaten >= enemy_data.get("appear_at", 0):
         active = True
-
+            
     if active:
         enemy.update(snake.body[-1])
         if enemy.collide_with([snake.body[-1]]):
@@ -77,6 +80,12 @@ def main(level_data):
     game_over = False
     level_complete = False
     paused = False
+    
+    if level_data["nombre"] == "Nivel 3":
+        turret = Turret(WIDTH // 2 - 10, HEIGHT // 2 - 10)
+    else:
+        turret = None
+
 
     while running:
         clock.tick(speed)
@@ -99,6 +108,13 @@ def main(level_data):
 
         # Lógica de juego
         if not game_over and not level_complete:
+            if turret:
+                turret.update()
+                if turret.check_collision(pygame.Rect(
+                    snake.body[-1][0] * CELL_SIZE, snake.body[-1][1] * CELL_SIZE, CELL_SIZE, CELL_SIZE
+                )):
+                    game_over = True
+                    
             alive, foods_eaten = update_snake(snake, food, foods_eaten, COLS, ROWS)
             if not alive:
                 game_over = True
@@ -115,6 +131,10 @@ def main(level_data):
         food.draw(screen)
         if enemy_active:
             enemy.draw(screen)
+            
+        if turret:
+            turret.draw(screen)
+
 
         if level_complete:
             draw_text(screen, message, WHITE, WIDTH, HEIGHT, y_offset=-20)
